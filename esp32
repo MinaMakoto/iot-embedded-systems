@@ -1,0 +1,42 @@
+# Wi-Fi Connection Snippet
+import network
+sta = network.WLAN(network.STA_IF)
+sta.active(True)
+sta.connect("YOUR_SSID", "YOUR_PASSWORD")
+while not sta.isconnected():
+    pass
+print("Connected:", sta.ifconfig())
+
+# DHT22 Sensor Reading Snippet
+import dht, machine
+sensor = dht.DHT22(machine.Pin(4))
+sensor.measure()
+print("Temperature:", sensor.temperature())
+print("Humidity:", sensor.humidity())
+
+# Simple Web Server Snippet
+import socket
+s = socket.socket()
+s.bind(('0.0.0.0', 80))
+s.listen(1)
+while True:
+    conn, addr = s.accept()
+    request = conn.recv(1024)
+    response = "HTTP/1.1 200 OK\n\nHello from ESP32"
+    conn.send(response)
+    conn.close()
+
+# MQTT Publish Snippet
+from umqtt.simple import MQTTClient
+client = MQTTClient("esp32", "broker.hivemq.com")
+client.connect()
+client.publish(b"exam/topic", b"Hello from ESP32")
+
+# LED Actuator Control Snippet
+import machine, time
+led = machine.Pin(2, machine.Pin.OUT)
+for i in range(5):
+    led.value(1)
+    time.sleep(1)
+    led.value(0)
+    time.sleep(1)
